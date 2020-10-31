@@ -1,0 +1,79 @@
+{%extends "users/base.html"%}
+{% load static%}
+
+{% load bootstrap4 %} 
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>New comment</title>
+    {{form.media}}
+
+{% block styles %} {% bootstrap_css %}
+  <link rel="stylesheet" href="{% static 'css/neb.css' %}"> {% endblock %}
+
+</head>
+<body>
+    
+    {%block content%}
+
+
+    <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                    <div class="card">
+                            <h2 class="card-header">Topic: {{post.topic}}</h2>
+    
+                            <div class="card-body">
+                              <div class="card-image">
+                                  <img src="{{post.image.url}}" class="img-responsive" alt="" style="width: 300px; height: 250px;">
+                              </div>
+                              <h5 class="details">Description: {{post.description}}</h5><br>
+    
+                            </div>
+                            <div class="card-footer">
+                                    {% if comments %}
+                              {%for comment in comments%}
+                              <div class="card text-white bg-secondary mb-3">
+                                  <div class="card-body firstletter">
+                                      {{comment.comment}}
+                                      <footer class="blockquote-footer" style="color:white;">
+                                          <cite title="Source Title">By {{comment.user.username}}</cite>
+                                      </footer>
+                                  </div>
+                              </div>
+                              {%endfor%}
+                              {% else %}
+                            <p>No comments found</p>
+                            {% endif %}
+                              <hr>
+                              <a href="{% url 'new-comment' post.id%}">
+                                <button class="btn btn-outline-primary btn-sm">add comment</button>
+                            </a>
+                            </div>
+    
+                          </div>
+                    
+                    <div class="card-footer">
+                            <form action="{%url 'new-comment' post.id%}" method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                    
+                                {% bootstrap_form form %}
+                                <input type="submit" class="btn btn-primary" value="Comment">
+                            </form>
+                    </div>
+                </div>
+            <div class="col-md-4"></div>
+            </div>
+        
+
+
+    {%endblock%}
+
+
+</body>
+</html>

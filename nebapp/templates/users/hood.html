@@ -1,0 +1,162 @@
+{%extends "users/base.html"%}
+{% load static%}
+{% load bootstrap4 %} 
+{% load static %}
+
+
+<title>My hood</title>
+    {{form.media}}
+
+{% block styles%}
+{{block.super}}
+<link href="https://fonts.googleapis.com/css?family=Cherry+Swash|Lilita+One|Titan+One" rel="stylesheet"> 
+<link rel="stylesheet" href="{% static 'css/hood.css' %}">
+{% endblock %}
+
+
+{% block content %}
+<br><br><br><br><br><br><br><br><br>
+<div class="container">
+    
+    <div class="header">
+        <h1 class="head">Welcome {{our_hood.name}} resident</h1><hr>
+
+      <div class="row">
+        <div class="col-md-6">
+            <img src="{{our_hood.image.url}}" class="img-responsive" alt="" style="border-radius: 50%;width: 100px; height: 100px;">
+            <span><h4>{{our_hood.name}}</h4></span>&nbsp;
+
+            <span><h4><strong>Admin:</strong> {{our_hood.user.username}}</h4></span>
+        </div><br>
+        <div class="col-md-6">
+          
+        
+      
+
+        <h3 class="title">Description</h3><br>
+        <h5 class="description">{{our_hood.description}}</h5><br>
+        <h3 class="title">Emergency contanct:</h3>
+        <h5 class="description">Police contact: {{our_hood.police_contact}}</h5><br>
+        <h5 class="description">Hospital contact: {{our_hood.hospital_contact}}</h5><br>
+        <h4 class="description">Residents: {{our_hood.population}}</h4>  
+      </div>
+        </div>
+    </div>
+    <hr>
+    <br><br><br>
+
+
+   
+    <nav>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+        
+            <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Posts</a>
+            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">View business</a>
+    </div>
+</nav>
+
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab"><br>
+
+                    <a href="{%url 'new-post' our_hood.id %}">
+                        <button class="btn btn-primary">
+                            <i class="large material-icons">add_box</i>Add Post</button>
+                    </a><br><br>
+              <h1>Posts</h1>
+              
+                    
+                    {% for post in posts %}
+                    <div class="row">
+                    <div class="col-md-5">
+                      <div class="card">
+                        <h2 class="card-header">Topic: {{post.topic}}</h2>
+
+                        <div class="card-body">
+                          <div class="card-image">
+                              <img src="{{post.image.url}}" class="img-responsive" alt="" style="width: 300px; height: 250px;">
+                          </div>
+                          <h5 class="details">Description: {{post.description}}</h5><br>
+
+                        </div>
+                        <div class="card-footer">
+                          {%for comment in comments%}
+                          <div class="card text-white bg-secondary mb-3">
+                              <div class="card-body firstletter">
+                                  {{comment.comment}}
+                                  <footer class="blockquote-footer" style="color:white;">
+                                      <cite title="Source Title">{{comment.user.username}}</cite>
+                                  </footer>
+                              </div>
+                          </div>
+                          <h5></h5>
+                          {%endfor%}
+                          <hr>
+                          <a href="{% url 'new-comment' post.id%}">
+                            <button class="btn btn-outline-primary btn-sm">add comment</button>
+                        </a>
+                        </div>
+
+                      </div>
+                    
+                    
+
+
+                </div>
+
+                    </div>
+                    <br>
+                    
+                   
+                    {%endfor%}
+                    
+
+
+
+                
+
+                </div>
+
+                <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab"><br>
+                        <a href="{%url 'new-business' our_hood.id %}" class="btn btn-outline-primary btn-sm">
+                            <button class="btn btn-primary">
+                                <i class="large material-icons">add_circle</i>Add Business</button>
+                              </a>
+
+                        
+                <h3 id="profile">Businesses:</h3>        
+               {% for busi in business %}         
+        <table>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Business Email</th>
+          </tr>
+
+          <tr>
+          
+            <td>{{busi.business_name}}</td>
+            <td>{{busi.business_description}}</td>
+            <td>{{busi.business_email}}</td>
+
+        </tr>
+        {%endfor%}
+
+        </table>
+      
+      
+
+   
+                </div>
+
+        </div>
+    </div>
+
+
+
+{% block scripts %}
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  {% bootstrap_javascript %} {% endblock %}
+
+
+
+{%endblock%}
